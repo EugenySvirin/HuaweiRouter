@@ -10,6 +10,7 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check http://doc.qt.io/qt-5/deployment-android.html for more information.
@@ -25,9 +26,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #endif()
 
 find_package(OpenGL REQUIRED)
-find_package(GLUT REQUIRED)
+#find_package(GLUT REQUIRED)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
-
+include_directories(include)
 if(ANDROID)
   add_library(HuaweiRouter SHARED
     main.cpp
@@ -38,18 +39,42 @@ if(ANDROID)
     oglwidget.h
     graph.cpp
     graph.h
-)
+    channel.h
+    channel.cpp
+    node.h
+    node.cpp
+    network.h
+    network.cpp
+    dir/channel.cpp
+          SimulationCore/ServerNode.cpp SimulationCore/ServerNode.h SimulationCore/ServerConnection.cpp SimulationCore/ServerConnection.h SimulationCore/DebugServer.cpp SimulationCore/DebugServer.h)
 else()
   add_executable(HuaweiRouter
-    main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
-    oglwidget.cpp
-    oglwidget.h
-    graph.cpp
-    graph.h
-)
+          Network/main.cpp
+          mainwindow.cpp
+          mainwindow.h
+          mainwindow.ui
+          oglwidget.cpp
+          oglwidget.h
+          graph.cpp
+          graph.h
+          Network/channel.h
+          Network/channel.cpp
+          Network/node.h
+          Network/node.cpp
+          Network/network.h
+          Network/network.cpp
+          Network/channel.cpp
+          SimulationCore/simulation.cpp
+          SimulationCore/simulation.h
+          SimulationCore/Messages.h
+          SimulationCore/Messages.cpp
+          SimulationCore/ServerNode.cpp
+          SimulationCore/ServerNode.h
+          SimulationCore/ServerConnection.cpp
+          SimulationCore/ServerConnection.h
+          Utils/MutexBool.cpp
+          Utils/MutexBool.h
+          SimulationCore/DebugServer.cpp SimulationCore/DebugServer.h Utils/Settings.h Utils/ColorMode.cpp Utils/ColorMode.h)
 endif()
 
 target_link_libraries(HuaweiRouter PRIVATE Qt5::Widgets  ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
